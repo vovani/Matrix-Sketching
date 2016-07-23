@@ -26,7 +26,10 @@ function err = run_prediction( Z, phi, s, dataset )
         
         t = f * phi(dataset.Xt);
         
-        pred = mode(neg .* (t < 0) + pos.* (t>0), size(t, 1));
+        pred = neg .* (t < 0) + pos.* (t>0);
+        if size(t,1) > 1
+            pred = mode(pred);
+        end
         err = nnz(pred ~= dataset.Lt') / length(dataset.Lt);
     end 
 end
